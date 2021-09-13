@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.romain.spaceinvaders.Controller">
+   <children>
+      <Pane prefHeight="600.0" prefWidth="600.0">
+         <children>
+            <ImageView fitHeight="600.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/background.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="lblResult" alignment="CENTER" layoutY="232.0" prefHeight="137.0" prefWidth="600.0" text="You win" textFill="#009402">
+               <font>
+                  <Font name="Arial Bold" size="85.0" />
+               </font>
+            </Label>
+            <Pane layoutY="535.0" prefHeight="65.0" prefWidth="600.0" style="-fx-background-color: black;" />
+         </children>
+      </Pane>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e5ff1f" height="5.0" stroke="BLACK" strokeType="INSIDE" width="540.0" x="30.0" y="530.0" />
+      <HBox alignment="CENTER_LEFT" layoutX="30.0" layoutY="535.0" prefHeight="65.0" prefWidth="540.0">
+         <children>
+            <Button mnemonicParsing="false" text="Button" />
+            <Button mnemonicParsing="false" text="Button" />
+            <Label text="Score : " textFill="#009402">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label text="1000" textFill="#009402">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+   </children>
+</Pane>
