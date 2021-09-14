@@ -1,5 +1,6 @@
 package fr.romain.spaceinvaders;
 
+import fr.romain.spaceinvaders.entities.Brick;
 import fr.romain.spaceinvaders.entities.Ship;
 import fr.romain.spaceinvaders.entities.ShipShot;
 import fr.romain.spaceinvaders.utils.Constant;
@@ -11,11 +12,15 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class Controller implements Constant {
     private Ship ship;
     private AnimationTimer timer;
     private int shipDeltaX;
     private ShipShot shipshot;
+    private List<Brick> walls;
 
     public Controller(){
         timer = new AnimationTimer() {
@@ -41,6 +46,7 @@ public class Controller implements Constant {
         initGame();
         Initialisation.initShip(ship, board);
         Initialisation.initShipShot(shipshot, board);
+        Initialisation.initWalls(80, 400, 80, walls, board);
 
         timer.start();
     }
@@ -84,5 +90,7 @@ public class Controller implements Constant {
     private void initGame(){
         ship = new Ship(X_POS_INIT_SHIP, Y_POS_INIT_SHIP, SHIP_WIDTH, SHIP_HEIGHT);
         shipshot = new ShipShot(-10, -10, SHIPSHOT_WIDTH, SHIPSHOT_HEIGHT);
+        walls = new LinkedList<>();
+
     }
 }

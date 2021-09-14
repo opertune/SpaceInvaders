@@ -5,6 +5,7 @@ import fr.romain.spaceinvaders.utils.Constant;
 import javafx.scene.paint.ImagePattern;
 
 public class ShipShot extends Entity implements ConstImages, Constant {
+
     // Constructor
     public ShipShot(double x, double y, double width, double height){
         super(x, y, width, height);

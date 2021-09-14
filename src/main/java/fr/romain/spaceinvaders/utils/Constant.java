@@ -24,4 +24,8 @@ public interface Constant {
     int SHIPSHOT_WIDTH = 10;
     int SHIPSHOT_HEIGHT = 10;
     int SHIPSHOT_DELTAY = -10;
+
+    // Brick
+    int BRICK_WIDTH = 10;
+    int BRICK_HEIGHT = 10;
 }
