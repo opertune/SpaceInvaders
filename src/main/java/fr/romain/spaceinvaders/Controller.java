@@ -61,7 +61,7 @@ public class Controller implements Constant {
         switch (event.getCode()){
             case A: shipDeltaX = -SHIP_DELTAX; handleShip(); break;
             case D: shipDeltaX = SHIP_DELTAX; handleShip(); break;
-            case SPACE: if(!ship.is_shipIsShooting()){ ship.set_shipIsShooting(true); ShipShot.shipShotPlacement(shipshot, ship); }; break;
+            case SPACE: if(!ship.is_shipIsShooting()){ ship.set_shipIsShooting(true); ShipShot.shipShotPlacement(shipshot, ship); } break;
         }
     }
 
@@ -78,9 +78,10 @@ public class Controller implements Constant {
         // On ne veut pas que le vaisseau puisse tirer en rafale
         if(shipshot.getY() <= -20){
             ship.set_shipIsShooting(false);
-        }else if(shipshot.getY() >= 20){
+        }else if(shipshot.getY() >= -20){
             shipshot.setY(shipshot.getY() + SHIPSHOT_DELTAY);
         }
+        shipShotCollisions();
     }
 
     private void shipMoveHorizontal(int shipDeltaX){
@@ -91,6 +92,21 @@ public class Controller implements Constant {
         ship = new Ship(X_POS_INIT_SHIP, Y_POS_INIT_SHIP, SHIP_WIDTH, SHIP_HEIGHT);
         shipshot = new ShipShot(-10, -10, SHIPSHOT_WIDTH, SHIPSHOT_HEIGHT);
         walls = new LinkedList<>();
+
+    }
+
+    private void shipShotCollisions(){
+        Brick brick = null;
+        for (Brick b : walls){
+            if(b.getBoundsInParent().intersects(shipshot.getBoundsInParent())){
+                shipshot.setX(-10);
+                shipshot.setY(-10);
+                ship.set_shipIsShooting(false);
+                brick = b;
+            }
+        }
+        walls.remove(brick);
+        board.getChildren().remove(brick);
 
     }
 }
