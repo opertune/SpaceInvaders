@@ -1,5 +1,6 @@
 package fr.romain.spaceinvaders;
 
+import fr.romain.spaceinvaders.entities.Alien;
 import fr.romain.spaceinvaders.entities.Brick;
 import fr.romain.spaceinvaders.entities.Ship;
 import fr.romain.spaceinvaders.entities.ShipShot;
@@ -12,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,18 +23,7 @@ public class Controller implements Constant {
     private int shipDeltaX;
     private ShipShot shipshot;
     private List<Brick> walls;
-
-    public Controller(){
-        timer = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                handleShip();
-                if(ship.is_shipIsShooting()){
-                    handleShipShot();
-                }
-            }
-        };
-    }
+    private Alien[][] aliens;
 
     @FXML
     private Pane board;
@@ -47,6 +38,8 @@ public class Controller implements Constant {
         Initialisation.initShip(ship, board);
         Initialisation.initShipShot(shipshot, board);
         Initialisation.initWalls(80, 400, 80, walls, board);
+        Initialisation.initAliens(aliens, board);
+
 
         timer.start();
     }
@@ -70,6 +63,25 @@ public class Controller implements Constant {
         shipDeltaX = 0;
     }
 
+    public Controller(){
+        timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                handleShip();
+                if(ship.is_shipIsShooting()){
+                    handleShipShot();
+                }
+            }
+        };
+    }
+
+    private void initGame(){
+        ship = new Ship(X_POS_INIT_SHIP, Y_POS_INIT_SHIP, SHIP_WIDTH, SHIP_HEIGHT);
+        shipshot = new ShipShot(-10, -10, SHIPSHOT_WIDTH, SHIPSHOT_HEIGHT);
+        walls = new LinkedList<>();
+        aliens = new Alien[5][10];
+    }
+
     private void handleShip(){
         shipMoveHorizontal(shipDeltaX);
     }
@@ -86,13 +98,6 @@ public class Controller implements Constant {
 
     private void shipMoveHorizontal(int shipDeltaX){
         ship.setX(ship.shipMoving(shipDeltaX));
-    }
-
-    private void initGame(){
-        ship = new Ship(X_POS_INIT_SHIP, Y_POS_INIT_SHIP, SHIP_WIDTH, SHIP_HEIGHT);
-        shipshot = new ShipShot(-10, -10, SHIPSHOT_WIDTH, SHIPSHOT_HEIGHT);
-        walls = new LinkedList<>();
-
     }
 
     private void shipShotCollisions(){

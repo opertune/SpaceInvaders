@@ -4,6 +4,7 @@ public interface Constant {
     // Frame
     int FRAME_WIDTH = 600;
     int FRAME_HEIGHT = 600;
+    int FRAME_MARGIN = 50;
 
     // Ship size
     int SHIP_WIDTH = 39;
@@ -28,4 +29,21 @@ public interface Constant {
     // Brick
     int BRICK_WIDTH = 10;
     int BRICK_HEIGHT = 10;
+
+    // Alien
+    int ALIEN_WIDTH = 33;
+    int ALIEN_HEIGHT = 25;
+
+    int X_POS_INIT_ALIEN = 33 + FRAME_MARGIN;
+    int Y_POS_INIT_ALIEN = 50;
+    int X_SPACE_ALIEN = 10;
+    int Y_SPACE_ALIEN = 30;
+
+    int ALIEN_DELTAX = 2;
+    int ALIEN_DELTAY = 20;
+    int ALIEN_SPEED = 1;
+
+
+
+
 }
