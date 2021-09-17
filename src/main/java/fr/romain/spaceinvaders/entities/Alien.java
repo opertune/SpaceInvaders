@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 
 import java.lang.reflect.Array;
+import java.util.List;
 
 public class Alien extends Entity implements Constant, ConstImages {
     // Members
@@ -23,18 +24,14 @@ public class Alien extends Entity implements Constant, ConstImages {
     }
 
     // Methods
-    public static void aliensMoving(Alien[][] aliens){
+    public static void aliensMoving(List<Alien> aliens){
         if(goRight){ // Déplacement vers la droite
-            for(int column = 0; column < 10; column++){
-                for (int line = 0; line < 5; line++){
-                    aliens[line][column].setX(aliens[line][column].getX() + ALIEN_DELTAX);
-                }
+            for(Alien a : aliens){
+                a.setX(a.getX() + ALIEN_DELTAX);
             }
         }else{ // Déplacement vers la gauche
-            for(int column = 0; column < 10; column++){
-                for (int line = 0; line < 5; line++){
-                    aliens[line][column].setX(aliens[line][column].getX() - ALIEN_DELTAX);
-                }
+            for(Alien a : aliens){
+                a.setX(a.getX() - ALIEN_DELTAX);
             }
         }
         int imgNb;
@@ -49,23 +46,21 @@ public class Alien extends Entity implements Constant, ConstImages {
         aliensMovingIntoBoard(aliens);
     }
 
-    public static void aliensMovingIntoBoard(Alien[][] aliens){
+    public static void aliensMovingIntoBoard(List<Alien> aliens){
+
         // Les aliens descendent et se dirigent dans l'autre sens
         if(Utility.aliensTouchRightSide(aliens)){
-            for(int column = 0; column < 10; column++){
-                for (int line = 0; line < 5; line++){
-                    aliens[line][column].setY(aliens[line][column].getY() + ALIEN_DELTAY);
-                }
+            for(Alien a : aliens){
+                a.setY(a.getY()+ALIEN_DELTAY);
             }
+
             goRight = false;
             if(Alien.getSpeed() < 10){
                 Alien.setSpeed(Alien.getSpeed()+1);
             }
         }else if(Utility.aliensTouchLeftSide(aliens)){
-            for(int column = 0; column < 10; column++){
-                for (int line = 0; line < 5; line++){
-                    aliens[line][column].setY(aliens[line][column].getY() + ALIEN_DELTAY);
-                }
+            for(Alien a : aliens){
+                a.setY(a.getY()+ALIEN_DELTAY);
             }
             goRight = true;
             if(Alien.getSpeed() < 10){

@@ -11,6 +11,7 @@ import javafx.scene.shape.Rectangle;
 import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Initialisation implements ConstImages, Constant{
@@ -43,22 +44,22 @@ public class Initialisation implements ConstImages, Constant{
         }
     }
 
-    public static void initAliens(Alien[][] aliens, Pane board){
-        for (int colonne = 0; colonne < 10; colonne++){
-            aliens[0][colonne] = new Alien(X_POS_INIT_ALIEN+(ALIEN_WIDTH+X_SPACE_ALIEN)*colonne, Y_POS_INIT_ALIEN, ALIEN_WIDTH, ALIEN_HEIGHT, ALIEN_HIGH_1);
-            for(int line = 1; line < 3; line++){
-                aliens[line][colonne] = new Alien(X_POS_INIT_ALIEN+(ALIEN_WIDTH+X_SPACE_ALIEN)*colonne, Y_POS_INIT_ALIEN+(ALIEN_HEIGHT+Y_SPACE_ALIEN)*line, ALIEN_WIDTH, ALIEN_HEIGHT, ALIEN_MIDDLE_1);
-            }
-            for(int line = 3; line < 5; line ++){
-                aliens[line][colonne] = new Alien(X_POS_INIT_ALIEN+(ALIEN_WIDTH+X_SPACE_ALIEN)*colonne, Y_POS_INIT_ALIEN+(ALIEN_HEIGHT+Y_SPACE_ALIEN)*line, ALIEN_WIDTH, ALIEN_HEIGHT, ALIEN_BOTTOM_1);
+    public static void initAliens(List<Alien> aliensList, Pane board){
+        for (int i = 1; i <= 5; i++){
+            for (int j = 0; j < 10; j++){
+                if(i < 1){
+                    aliensList.add(new Alien(X_POS_INIT_ALIEN+(ALIEN_WIDTH+X_SPACE_ALIEN)*j, Y_POS_INIT_ALIEN, ALIEN_WIDTH, ALIEN_HEIGHT, ALIEN_HIGH_1));
+                }else if(i < 3){
+                    aliensList.add(new Alien(X_POS_INIT_ALIEN+(ALIEN_WIDTH+X_SPACE_ALIEN)*j, Y_POS_INIT_ALIEN*i, ALIEN_WIDTH, ALIEN_HEIGHT, ALIEN_MIDDLE_1));
+                }else {
+                    aliensList.add(new Alien(X_POS_INIT_ALIEN+(ALIEN_WIDTH+X_SPACE_ALIEN)*j, Y_POS_INIT_ALIEN*i, ALIEN_WIDTH, ALIEN_HEIGHT, ALIEN_BOTTOM_1));
+                }
             }
         }
 
         // Display Aliens in board
-        for (int i = 0; i < 5; i++){
-            for (int j = 0; j < 10; j++){
-                board.getChildren().add(aliens[i][j]);
-            }
+        for (Alien a : aliensList){
+            board.getChildren().add(a);
         }
     }
 

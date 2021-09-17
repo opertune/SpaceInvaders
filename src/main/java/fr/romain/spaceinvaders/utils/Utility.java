@@ -3,52 +3,50 @@ package fr.romain.spaceinvaders.utils;
 import fr.romain.spaceinvaders.entities.Alien;
 import javafx.scene.paint.ImagePattern;
 
+import java.util.List;
+
 public class Utility implements Constant, ConstImages {
-    public static boolean aliensTouchRightSide(Alien[][] aliens){
+    public static boolean aliensTouchRightSide(List<Alien> aliens) {
         boolean response = false;
-        for(int column = 0; column < 10; column++){
-            for (int line = 0; line < 5; line++){
-                if(aliens[line][column].getX() > FRAME_WIDTH - FRAME_MARGIN - ALIEN_WIDTH - ALIEN_DELTAX){
-                    response = true;
-                    break;
-                }
+        for (Alien a : aliens) {
+            if (a.getX() > FRAME_WIDTH - FRAME_MARGIN - ALIEN_WIDTH - ALIEN_DELTAX) {
+                response = true;
+                break;
             }
         }
         return response;
     }
 
-    public static boolean aliensTouchLeftSide(Alien[][] aliens){
+    public static boolean aliensTouchLeftSide(List<Alien> aliens) {
         boolean response = false;
-        for(int column = 0; column < 10; column++){
-            for (int line = 0; line < 5; line++){
-                if(aliens[line][column].getX() < FRAME_MARGIN){
-                    response = true;
-                    break;
-                }
+        for (Alien a : aliens) {
+            if (a.getX() < FRAME_MARGIN) {
+                response = true;
+                break;
             }
         }
         return response;
     }
 
-    public static void displayAlternateAliens(Alien[][] aliens, int imageNumber){
-        for(int column = 0; column < 10; column++){
-            if(imageNumber == 1){
-                aliens[0][column].setFill(new ImagePattern(ALIEN_HIGH_1));
-            }else if(imageNumber == 2){
-                aliens[0][column].setFill(new ImagePattern(ALIEN_HIGH_2));
-            }
-            for (int line = 1; line < 3; line++){
-                if(imageNumber == 1){
-                    aliens[line][column].setFill(new ImagePattern(ALIEN_MIDDLE_1));
-                }else if(imageNumber == 2){
-                    aliens[line][column].setFill(new ImagePattern(ALIEN_MIDDLE_2));
+    public static void displayAlternateAliens(List<Alien> aliensList, int imageNumber) {
+        for (Alien a : aliensList) {
+            if (imageNumber == 2){
+                if(aliensList.indexOf(a) < 20){ // line 1
+                    a.setFill(new ImagePattern(ALIEN_HIGH_2));
+                }else if(aliensList.indexOf(a) >= 20 && aliensList.indexOf(a) < 40){ // line 2 & 3
+                    a.setFill(new ImagePattern(ALIEN_MIDDLE_2));
+                }else if(aliensList.indexOf(a) >= 40 && aliensList.indexOf(a) <= aliensList.size()){ // line 4 & 5
+                    a.setFill(new ImagePattern(ALIEN_BOTTOM_2));
                 }
-            }
-            for (int line = 3; line < 5; line++){
-                if(imageNumber == 1){
-                    aliens[line][column].setFill(new ImagePattern(ALIEN_BOTTOM_1));
-                }else if(imageNumber == 2){
-                    aliens[line][column].setFill(new ImagePattern(ALIEN_BOTTOM_2));
+            }else if(imageNumber == 1){
+                if(aliensList.indexOf(a) < 20){ // line 1
+                    a.setFill(new ImagePattern(ALIEN_HIGH_1));
+                }
+                if(aliensList.indexOf(a) >= 20 && aliensList.indexOf(a) < 40){ // line 2 & 3
+                    a.setFill(new ImagePattern(ALIEN_MIDDLE_1));
+                }
+                if(aliensList.indexOf(a) >= 40 && aliensList.indexOf(a) <= aliensList.size()){ // line 4 & 5
+                    a.setFill(new ImagePattern(ALIEN_BOTTOM_1));
                 }
             }
         }
