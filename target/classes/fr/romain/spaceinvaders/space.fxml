@@ -26,6 +26,7 @@
                </font>
             </Label>
             <Pane layoutY="535.0" prefHeight="65.0" prefWidth="600.0" style="-fx-background-color: black;" />
+            <ImageView fx:id="explod" fitHeight="25.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </Pane>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#009402" height="5.0" stroke="BLACK" strokeType="INSIDE" width="540.0" x="30.0" y="530.0" />

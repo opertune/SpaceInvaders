@@ -11,7 +11,7 @@ public interface Constant {
     int SHIP_HEIGHT = 24;
 
     // Ship pos
-    int X_POS_INIT_SHIP = (FRAME_WIDTH / 2) - (SHIP_WIDTH /2);
+    int X_POS_INIT_SHIP = (FRAME_WIDTH / 2) - (SHIP_WIDTH / 2);
     int Y_POS_INIT_SHIP = 505;
 
     // Ship speed
@@ -34,16 +34,12 @@ public interface Constant {
     int ALIEN_WIDTH = 33;
     int ALIEN_HEIGHT = 25;
 
-    int X_POS_INIT_ALIEN = 33 + FRAME_MARGIN;
+    int X_POS_INIT_ALIEN = 40 + FRAME_MARGIN;
     int Y_POS_INIT_ALIEN = 50;
     int X_SPACE_ALIEN = 10;
-    int Y_SPACE_ALIEN = 30;
+    int Y_SPACE_ALIEN = 10;
 
-    int ALIEN_DELTAX = 2;
+    int ALIEN_DELTAX = 5;
     int ALIEN_DELTAY = 20;
-    int ALIEN_SPEED = 1;
-
-
-
-
 }
+

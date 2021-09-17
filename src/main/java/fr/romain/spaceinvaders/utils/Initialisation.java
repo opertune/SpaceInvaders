@@ -4,9 +4,13 @@ import fr.romain.spaceinvaders.entities.Alien;
 import fr.romain.spaceinvaders.entities.Brick;
 import fr.romain.spaceinvaders.entities.Ship;
 import fr.romain.spaceinvaders.entities.ShipShot;
+import javafx.scene.Group;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
+import javax.sound.sampled.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class Initialisation implements ConstImages, Constant{
@@ -56,5 +60,20 @@ public class Initialisation implements ConstImages, Constant{
                 board.getChildren().add(aliens[i][j]);
             }
         }
+    }
+
+    public static void initSound(String soundPath){
+        File sound = new File(soundPath);
+        try {
+            Clip clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(sound));
+            FloatControl control = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            float range = control.getMinimum();
+            control.setValue(range * (1 - 60/100.0f));
+            clip.start();
+        } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }

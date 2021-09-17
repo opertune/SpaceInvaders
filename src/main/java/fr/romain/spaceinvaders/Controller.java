@@ -1,29 +1,35 @@
 package fr.romain.spaceinvaders;
 
-import fr.romain.spaceinvaders.entities.Alien;
-import fr.romain.spaceinvaders.entities.Brick;
-import fr.romain.spaceinvaders.entities.Ship;
-import fr.romain.spaceinvaders.entities.ShipShot;
+import fr.romain.spaceinvaders.entities.*;
+import fr.romain.spaceinvaders.utils.ConstImages;
+import fr.romain.spaceinvaders.utils.ConstSounds;
 import fr.romain.spaceinvaders.utils.Constant;
 import fr.romain.spaceinvaders.utils.Initialisation;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Controller implements Constant {
+public class Controller implements Constant, ConstImages, ConstSounds {
     private Ship ship;
     private AnimationTimer timer;
     private int shipDeltaX;
     private ShipShot shipshot;
     private List<Brick> walls;
     private Alien[][] aliens;
+    private long movingAliensCount = 0;
+    private int score = 0;
+
+    @FXML
+    private ImageView explod;
 
     @FXML
     private Pane board;
@@ -40,7 +46,6 @@ public class Controller implements Constant {
         Initialisation.initWalls(80, 400, 80, walls, board);
         Initialisation.initAliens(aliens, board);
 
-
         timer.start();
     }
 
@@ -54,7 +59,13 @@ public class Controller implements Constant {
         switch (event.getCode()){
             case A: shipDeltaX = -SHIP_DELTAX; handleShip(); break;
             case D: shipDeltaX = SHIP_DELTAX; handleShip(); break;
-            case SPACE: if(!ship.is_shipIsShooting()){ ship.set_shipIsShooting(true); ShipShot.shipShotPlacement(shipshot, ship); } break;
+            case SPACE:
+                if(!ship.is_shipIsShooting()){
+                Initialisation.initSound(shipShotSound);
+                ship.set_shipIsShooting(true);
+                ShipShot.shipShotPlacement(shipshot, ship);
+            }
+            break;
         }
     }
 
@@ -67,9 +78,14 @@ public class Controller implements Constant {
         timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
+                movingAliensCount++;
                 handleShip();
                 if(ship.is_shipIsShooting()){
                     handleShipShot();
+                }
+                if (movingAliensCount % (100- (10L * Alien.getSpeed())) == 0){
+                    Alien.aliensMoving(aliens);
+                    movingAliensCount = 0;
                 }
             }
         };
@@ -80,6 +96,8 @@ public class Controller implements Constant {
         shipshot = new ShipShot(-10, -10, SHIPSHOT_WIDTH, SHIPSHOT_HEIGHT);
         walls = new LinkedList<>();
         aliens = new Alien[5][10];
+        movingAliensCount = 0;
+        lblScore.setText(String.valueOf(score));
     }
 
     private void handleShip(){
@@ -101,6 +119,7 @@ public class Controller implements Constant {
     }
 
     private void shipShotCollisions(){
+        // Collision avec une brique
         Brick brick = null;
         for (Brick b : walls){
             if(b.getBoundsInParent().intersects(shipshot.getBoundsInParent())){
@@ -110,8 +129,45 @@ public class Controller implements Constant {
                 brick = b;
             }
         }
-        walls.remove(brick);
-        board.getChildren().remove(brick);
+        if (brick != null){
+            Initialisation.initSound(brickDestructionSound);
+            walls.remove(brick);
+            board.getChildren().remove(brick);
+        }
+
+        // Collision avec un alien
+        for(Alien[] alienRow : aliens){
+            for (Alien alien : alienRow){
+                if(alien.getBoundsInParent().intersects(shipshot.getBoundsInParent())){
+                    Initialisation.initSound(alienDeadSound);
+                    // On replace le tir hors du bord
+                    shipshot.setX(-10);
+                    shipshot.setY(-10);
+                    // On autorise un nouveau tir
+                    ship.set_shipIsShooting(false);
+
+                    // Déplace l'imageview qui contient le gif de l'éplosion à l'emplacement de l'alien mort
+                    explod.setLayoutX(alien.getX());
+                    explod.setLayoutY(alien.getY());
+                    explod.setImage(new Image("File:./src/main/resources/fr/romain/spaceinvaders/images/explod.gif"));
+                    // Déplace l'alien mort en dehors du board
+                    alien.setLayoutX(-1000);
+                    alien.setLayoutY(-1000);
+                    // Augmente et affiche le score
+                    score++;
+                    lblScore.setText(String.valueOf(score));
+                    // Si tout les aliens sont mort -> Fin du jeu
+                    if(score == 50){
+                        timer.stop();
+                        lblResult.setTextFill(Color.web("#009402"));
+                        lblScore.setText("WIN !");
+                    }
+                }
+            }
+        }
 
     }
+
+
+
 }
