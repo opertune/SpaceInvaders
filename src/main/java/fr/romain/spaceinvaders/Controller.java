@@ -114,6 +114,9 @@ public class Controller implements Constant, ConstImages, ConstSounds {
                 try {
                     for (ShipShot s : alienShot) {
                         if (!s.isShooting()) {
+                            for (int i = 1; i <=4; i++){
+                                Initialisation.initSound("src/main/resources/fr/romain/spaceinvaders/sounds/alienShotSound" + i + ".wav", sldVolume);
+                            }
                             s.setVisible(true);
                             Alien rndAlien = aliensList.get(new Random().nextInt(50));
                             s.setX(rndAlien.getX() + 15);
@@ -219,11 +222,25 @@ public class Controller implements Constant, ConstImages, ConstSounds {
             } else if (s.getY() < 535) {
                 s.setY(s.getY() - ALIEN_SHOT_DELTAY);
             }
-            alienShotCollisions();
+            alienShotCollisions(s);
         }
     }
 
-    private void alienShotCollisions() {
-
+    private void alienShotCollisions(ShipShot s) {
+        // Collision avec une brique
+        Brick brick = null;
+        for (Brick b : walls) {
+            if (b.getBoundsInParent().intersects(s.getBoundsInParent())) {
+                s.setX(-10);
+                s.setY(-10);
+                s.setShooting(false);
+                brick = b;
+            }
+        }
+        if (brick != null) {
+            Initialisation.initSound(brickDestructionSound, sldVolume);
+            walls.remove(brick);
+            board.getChildren().remove(brick);
+        }
     }
 }

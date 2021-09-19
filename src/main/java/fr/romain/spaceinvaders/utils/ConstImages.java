@@ -26,4 +26,6 @@ public interface ConstImages {
     Image ALIEN_BOTTOM_2 = new Image(PATH+"alienBottom2.png");
 
     Image ALIEN_SHOT = new Image(PATH + "tirVaisseau.png");
+
+    Image SHIP_EXPLOD = new Image(PATH + "explodShip.gif");
 }

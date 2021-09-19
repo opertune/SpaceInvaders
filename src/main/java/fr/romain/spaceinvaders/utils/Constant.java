@@ -44,6 +44,6 @@ public interface Constant {
 
     int ALIEN_SHOT_WIDTH = 5;
     int ALIEN_SHOT_HEIGHT = 20;
-    int ALIEN_SHOT_DELTAY = -2;
+    double ALIEN_SHOT_DELTAY = -1.3;
 }
 
