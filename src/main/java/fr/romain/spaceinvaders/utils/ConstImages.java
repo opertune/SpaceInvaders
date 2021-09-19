@@ -24,4 +24,6 @@ public interface ConstImages {
     Image ALIEN_MIDDLE_2 = new Image(PATH+"alienMiddle2.png");
     Image ALIEN_BOTTOM_1 = new Image(PATH+"alienBottom1.png");
     Image ALIEN_BOTTOM_2 = new Image(PATH+"alienBottom2.png");
+
+    Image ALIEN_SHOT = new Image(PATH + "tirVaisseau.png");
 }

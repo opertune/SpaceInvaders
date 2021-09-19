@@ -31,21 +31,21 @@ public class Utility implements Constant, ConstImages {
     public static void displayAlternateAliens(List<Alien> aliensList, int imageNumber) {
         for (Alien a : aliensList) {
             if (imageNumber == 2){
-                if(aliensList.indexOf(a) < 20){ // line 1
+                if(aliensList.indexOf(a) < 10){ // line 1
                     a.setFill(new ImagePattern(ALIEN_HIGH_2));
-                }else if(aliensList.indexOf(a) >= 20 && aliensList.indexOf(a) < 40){ // line 2 & 3
+                }else if(aliensList.indexOf(a) >= 10 && aliensList.indexOf(a) < 30){ // line 2 & 3
                     a.setFill(new ImagePattern(ALIEN_MIDDLE_2));
-                }else if(aliensList.indexOf(a) >= 40 && aliensList.indexOf(a) <= aliensList.size()){ // line 4 & 5
+                }else if(aliensList.indexOf(a) >= 30){ // line 4 & 5
                     a.setFill(new ImagePattern(ALIEN_BOTTOM_2));
                 }
             }else if(imageNumber == 1){
-                if(aliensList.indexOf(a) < 20){ // line 1
+                if(aliensList.indexOf(a) < 10){ // line 1
                     a.setFill(new ImagePattern(ALIEN_HIGH_1));
                 }
-                if(aliensList.indexOf(a) >= 20 && aliensList.indexOf(a) < 40){ // line 2 & 3
+                if(aliensList.indexOf(a) >= 10 && aliensList.indexOf(a) < 30){ // line 2 & 3
                     a.setFill(new ImagePattern(ALIEN_MIDDLE_1));
                 }
-                if(aliensList.indexOf(a) >= 40 && aliensList.indexOf(a) <= aliensList.size()){ // line 4 & 5
+                if(aliensList.indexOf(a) >= 30){ // line 4 & 5
                     a.setFill(new ImagePattern(ALIEN_BOTTOM_1));
                 }
             }
