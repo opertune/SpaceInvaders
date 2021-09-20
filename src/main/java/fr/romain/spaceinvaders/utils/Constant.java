@@ -44,6 +44,16 @@ public interface Constant {
 
     int ALIEN_SHOT_WIDTH = 5;
     int ALIEN_SHOT_HEIGHT = 20;
-    double ALIEN_SHOT_DELTAY = -1.3;
+    double ALIEN_SHOT_DELTAY = -3;
+    int NB_SHOT = 5;
+
+    // Saucer
+    int X_POS_INIT_SAUCER = -50;
+    int Y_POS_INIT_SAUCER = 30;
+    int SAUCER_WIDTH = 40;
+    int SAUCER_HEIGHT = 25;
+    int SAUCER_DELTAX = 5;
+    int SAUCER_DELAY = 10000;
+
 }
 

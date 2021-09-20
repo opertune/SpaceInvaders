@@ -16,7 +16,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
+import javax.swing.*;
 import java.util.*;
+import java.util.Timer;
 
 public class Controller implements Constant, ConstImages, ConstSounds {
     private Ship ship;
@@ -28,9 +30,16 @@ public class Controller implements Constant, ConstImages, ConstSounds {
     private long movingAliensCount = 0;
     private int score = 0;
     private List<ShipShot> alienShot = new ArrayList<>();
+    private boolean initStartButton = false;
+    private Ship saucer;
+    private Timer saucerTimer = new Timer();
+
 
     @FXML
     private ImageView explod;
+
+    @FXML
+    private ImageView shipExplod;
 
     @FXML
     private Pane board;
@@ -43,31 +52,40 @@ public class Controller implements Constant, ConstImages, ConstSounds {
 
     @FXML
     void onStartAction() {
-        board.requestFocus();
-        initGame();
-        Initialisation.initShip(ship, board);
-        Initialisation.initShipShot(shipshot, board);
-        Initialisation.initWalls(80, 400, 80, walls, board);
-        Initialisation.initAliens(aliensList, board);
-        Initialisation.initAliensShot(alienShot, board);
-        timer.start();
+        if (!initStartButton) {
+            board.requestFocus();
+            initGame();
+            Initialisation.initShip(ship, board);
+            Initialisation.initSaucer(saucer, board);
+            Initialisation.initShipShot(shipshot, board);
+            Initialisation.initWalls(80, 400, 80, walls, board);
+            Initialisation.initAliens(aliensList, board);
+            Initialisation.initAliensShot(alienShot, board);
+            timer.start();
+            moveSaucer();
+            initStartButton = true;
+        }
     }
 
     private void initGame() {
-        ship = new Ship(X_POS_INIT_SHIP, Y_POS_INIT_SHIP, SHIP_WIDTH, SHIP_HEIGHT);
+        ship = new Ship(X_POS_INIT_SHIP, Y_POS_INIT_SHIP, SHIP_WIDTH, SHIP_HEIGHT, SHIP);
+        saucer = new Ship(X_POS_INIT_SAUCER, Y_POS_INIT_SAUCER, SAUCER_WIDTH, SAUCER_HEIGHT, SAUCER);
+
         shipshot = new ShipShot(-10, -10, SHIPSHOT_WIDTH, SHIPSHOT_HEIGHT, SHIP_SHOT);
         walls = new LinkedList<>();
         movingAliensCount = 0;
         lblScore.setText(String.valueOf(score));
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < NB_SHOT; i++) {
             alienShot.add(new ShipShot(-10, -10, ALIEN_SHOT_WIDTH, ALIEN_SHOT_HEIGHT, ALIEN_SHOT));
         }
     }
 
     @FXML
     void onStopAction(ActionEvent event) {
+        clearBoard();
         timer.stop();
+        initStartButton = false;
     }
 
     @FXML
@@ -107,23 +125,21 @@ public class Controller implements Constant, ConstImages, ConstSounds {
                 }
 
                 if (movingAliensCount % (100 - (10L * Alien.getSpeed())) == 0) {
-                    Alien.aliensMoving(aliensList, walls, sldVolume, board, ship, timer, lblResult);
+                    Alien.aliensMoving(aliensList);
                     movingAliensCount = 0;
                 }
 
                 try {
                     for (ShipShot s : alienShot) {
                         if (!s.isShooting()) {
-                            for (int i = 1; i <=4; i++){
-                                Initialisation.initSound("src/main/resources/fr/romain/spaceinvaders/sounds/alienShotSound" + i + ".wav", sldVolume);
-                            }
+                            Initialisation.initSound("src/main/resources/fr/romain/spaceinvaders/sounds/alienShotSound" + (new Random().nextInt(4) + 1) + ".wav", sldVolume);
                             s.setVisible(true);
                             Alien rndAlien = aliensList.get(new Random().nextInt(50));
                             s.setX(rndAlien.getX() + 15);
                             s.setY(rndAlien.getY());
                         }
                     }
-                    for(ShipShot s : alienShot){
+                    for (ShipShot s : alienShot) {
                         if (!s.isShooting()) {
                             s.setShooting(true);
                         }
@@ -136,6 +152,20 @@ public class Controller implements Constant, ConstImages, ConstSounds {
         };
     }
 
+    private void clearBoard() {
+        board.getChildren().removeAll(aliensList);
+        board.getChildren().removeAll(ship);
+        board.getChildren().removeAll(shipshot);
+        board.getChildren().removeAll(alienShot);
+        board.getChildren().removeAll(walls);
+        alienShot.clear();
+        aliensList.clear();
+        walls.clear();
+        shipExplod.setY(-30);
+        lblResult.setText("");
+        lblScore.setText("0");
+        score = 0;
+    }
 
     private void handleShip() {
         shipMoveHorizontal(shipDeltaX);
@@ -193,6 +223,7 @@ public class Controller implements Constant, ConstImages, ConstSounds {
                 // Augmente et affiche le score
                 score++;
                 lblScore.setText(String.valueOf(score));
+
                 // Si tout les aliens sont mort -> Fin du jeu
                 if (score == 50) {
                     timer.stop();
@@ -206,7 +237,7 @@ public class Controller implements Constant, ConstImages, ConstSounds {
         if (deletedAlien != null) {
             board.getChildren().remove(aliensList.get(aliensList.indexOf(deletedAlien)));
             aliensList.remove(deletedAlien);
-            if(aliensList.size() < 5){
+            if (aliensList.size() < 5) {
                 board.getChildren().remove(alienShot.get(0));
                 alienShot.remove(0);
             }
@@ -242,5 +273,48 @@ public class Controller implements Constant, ConstImages, ConstSounds {
             walls.remove(brick);
             board.getChildren().remove(brick);
         }
+
+        // Collision avec le joueur
+        if(s.getBoundsInParent().intersects(ship.getBoundsInParent())){
+            shipExplod.setX(ship.getX());
+            shipExplod.setY(ship.getY());
+            shipExplod.setImage(SHIP_EXPLOD);
+            board.getChildren().remove(ship);
+            lblResult.setTextFill(Color.RED);
+            lblResult.setText("LOSE !");
+            timer.stop();
+        }
+    }
+
+    // Move saucer
+    private void moveSaucer(){
+        saucerTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (saucer.getX() <= 650) {
+                    AnimationTimer t = new AnimationTimer() {
+                        @Override
+                        public void handle(long now) {
+                            if (saucer.getX() >= 650) {
+                                this.stop();
+                            }
+                            saucer.setX(saucer.getX() + SAUCER_DELTAX);
+                        }
+                    };
+                    t.start();
+                } else if (saucer.getX() <= -50) {
+                    AnimationTimer t = new AnimationTimer() {
+                        @Override
+                        public void handle(long now) {
+                            if (saucer.getX() <= -50) {
+                                this.stop();
+                            }
+                            saucer.setX(saucer.getX() - SAUCER_DELTAX);
+                        }
+                    };
+                    t.start();
+                }
+            }
+        },5000, SAUCER_DELAY);
     }
 }

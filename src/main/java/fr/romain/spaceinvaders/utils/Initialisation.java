@@ -1,9 +1,6 @@
 package fr.romain.spaceinvaders.utils;
 
-import fr.romain.spaceinvaders.entities.Alien;
-import fr.romain.spaceinvaders.entities.Brick;
-import fr.romain.spaceinvaders.entities.Ship;
-import fr.romain.spaceinvaders.entities.ShipShot;
+import fr.romain.spaceinvaders.entities.*;
 import javafx.scene.Group;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.Pane;
@@ -15,10 +12,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class Initialisation implements ConstImages, Constant{
     public static void initShip(Ship ship, Pane board){
         board.getChildren().add(ship);
+    }
+
+    public static void initSaucer(Ship saucer, Pane board){
+        board.getChildren().add(saucer);
     }
 
     public static void initShipShot(ShipShot shipshot, Pane board){

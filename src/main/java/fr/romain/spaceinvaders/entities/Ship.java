@@ -2,6 +2,7 @@ package fr.romain.spaceinvaders.entities;
 
 import fr.romain.spaceinvaders.utils.Constant;
 import fr.romain.spaceinvaders.utils.ConstImages;
+import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 
 public class Ship extends Entity implements Constant, ConstImages {
@@ -9,9 +10,9 @@ public class Ship extends Entity implements Constant, ConstImages {
     private boolean _shipIsShooting;
 
     // Constructor
-    public Ship(double x, double y, double width, double height) {
+    public Ship(double x, double y, double width, double height, Image img) {
         super(x, y, width, height);
-        super.setImgPattern(new ImagePattern(SHIP));
+        super.setImgPattern(new ImagePattern(img));
         super.setFill(super.getImgPattern());
         this._shipIsShooting = false;
     }

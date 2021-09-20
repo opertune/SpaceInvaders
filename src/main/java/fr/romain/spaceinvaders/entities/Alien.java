@@ -35,7 +35,7 @@ public class Alien extends Entity implements Constant, ConstImages, ConstSounds 
     }
 
     // Methods
-    public static void aliensMoving(List<Alien> aliens, List<Brick> bricks, Slider sldVolume, Pane board, Ship joueur, AnimationTimer timer, Label lblResult) {
+    public static void aliensMoving(List<Alien> aliens) {
         if (goRight) { // Déplacement vers la droite
             for (Alien a : aliens) {
                 a.setX(a.getX() + ALIEN_DELTAX);

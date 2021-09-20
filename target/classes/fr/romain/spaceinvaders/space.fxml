@@ -60,6 +60,7 @@
                   </Label>
                </children></Pane>
             <ImageView fx:id="explod" fitHeight="25.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="shipExplod" fitHeight="24.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </Pane>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#009402" height="5.0" stroke="BLACK" strokeType="INSIDE" width="540.0" x="30.0" y="530.0" />
