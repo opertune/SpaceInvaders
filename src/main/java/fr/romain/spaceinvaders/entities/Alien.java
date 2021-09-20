@@ -20,7 +20,7 @@ public class Alien extends Entity implements Constant, ConstImages, ConstSounds 
     // Members
     private static boolean goRight = true;
     private static boolean alienPosition = true;
-    private static int speed = 1;
+    private static int speed = 70;
     private static List<Boolean> alienIsShooting = new ArrayList<>();
 
     // Constructor
@@ -35,7 +35,7 @@ public class Alien extends Entity implements Constant, ConstImages, ConstSounds 
     }
 
     // Methods
-    public static void aliensMoving(List<Alien> aliens) {
+    public static void aliensMoving(List<Alien> aliens, List<Brick> walls, Pane board) {
         if (goRight) { // Déplacement vers la droite
             for (Alien a : aliens) {
                 a.setX(a.getX() + ALIEN_DELTAX);
@@ -56,7 +56,7 @@ public class Alien extends Entity implements Constant, ConstImages, ConstSounds 
             alienPosition = true;
         }
         Utility.displayAlternateAliens(aliens, imgNb);
-
+        Utility.aliensHitWalls(walls, aliens, board);
     }
 
     public static void aliensMovingIntoBoard(List<Alien> aliens) {
@@ -66,16 +66,16 @@ public class Alien extends Entity implements Constant, ConstImages, ConstSounds 
                 a.setY(a.getY() + ALIEN_DELTAY);
             }
             goRight = false;
-            if (Alien.getSpeed() < 10) {
-                Alien.setSpeed(Alien.getSpeed() + 1);
+            if (Alien.getSpeed() > 10) {
+                Alien.setSpeed(Alien.getSpeed() - 10);
             }
         } else if (Utility.aliensTouchLeftSide(aliens)) {
             for (Alien a : aliens) {
                 a.setY(a.getY() + ALIEN_DELTAY);
             }
             goRight = true;
-            if (Alien.getSpeed() < 10) {
-                Alien.setSpeed(Alien.getSpeed() + 1);
+            if (Alien.getSpeed() > 10) {
+                Alien.setSpeed(Alien.getSpeed() - 10);
             }
         }
     }

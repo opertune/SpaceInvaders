@@ -78,8 +78,10 @@ public class Initialisation implements ConstImages, Constant{
         try {
             Clip clip = AudioSystem.getClip();
             clip.open(AudioSystem.getAudioInputStream(sound));
+
             FloatControl control = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
             float range = control.getMinimum();
+
             control.setValue((float) (range * (1 - volume.getValue()/100.0f)));
             clip.start();
         } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {

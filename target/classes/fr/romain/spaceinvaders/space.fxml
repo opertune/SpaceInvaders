@@ -19,11 +19,6 @@
                   <Image url="@images/background.png" />
                </image>
             </ImageView>
-            <Label fx:id="lblResult" alignment="CENTER" layoutY="232.0" prefHeight="137.0" prefWidth="600.0" textFill="#009402">
-               <font>
-                  <Font name="Arial Bold" size="85.0" />
-               </font>
-            </Label>
             <Pane layoutY="535.0" prefHeight="65.0" prefWidth="600.0" style="-fx-background-color: black;">
                <children>
                   <Button layoutX="32.0" layoutY="15.0" mnemonicParsing="false" onAction="#onStartAction" prefHeight="37.0" prefWidth="80.0" style="-fx-background-color: transparent; -fx-background-radius: 10; -fx-border-style: solid; -fx-border-width: 2; -fx-border-radius: 10; -fx-border-color: #009402;" text="Start" textFill="#009402">
@@ -61,6 +56,12 @@
                </children></Pane>
             <ImageView fx:id="explod" fitHeight="25.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true" />
             <ImageView fx:id="shipExplod" fitHeight="24.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true" />
+            <Label fx:id="lblResult" alignment="CENTER" layoutY="232.0" prefHeight="137.0" prefWidth="600.0" textFill="#009402">
+               <font>
+                  <Font name="Arial Bold" size="85.0" />
+               </font>
+            </Label>
+            <Rectangle fx:id="saucerLifeRec" arcHeight="5.0" arcWidth="5.0" fill="#1fff2a" height="5.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
          </children>
       </Pane>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#009402" height="5.0" stroke="BLACK" strokeType="INSIDE" width="540.0" x="30.0" y="530.0" />

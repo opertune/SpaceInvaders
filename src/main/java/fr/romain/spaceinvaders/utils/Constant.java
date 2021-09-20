@@ -3,7 +3,7 @@ package fr.romain.spaceinvaders.utils;
 public interface Constant {
     // Frame
     int FRAME_WIDTH = 600;
-    int FRAME_HEIGHT = 600;
+    int FRAME_HEIGHT = 535;
     int FRAME_MARGIN = 50;
 
     // Ship size
@@ -52,7 +52,7 @@ public interface Constant {
     int Y_POS_INIT_SAUCER = 30;
     int SAUCER_WIDTH = 40;
     int SAUCER_HEIGHT = 25;
-    int SAUCER_DELTAX = 5;
+    int SAUCER_DELTAX = 3;
     int SAUCER_DELAY = 5000;
 
 }

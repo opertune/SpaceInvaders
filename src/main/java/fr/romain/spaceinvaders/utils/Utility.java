@@ -1,6 +1,8 @@
 package fr.romain.spaceinvaders.utils;
 
 import fr.romain.spaceinvaders.entities.Alien;
+import fr.romain.spaceinvaders.entities.Brick;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.ImagePattern;
 
 import java.util.List;
@@ -50,5 +52,19 @@ public class Utility implements Constant, ConstImages {
                 }
             }
         }
+    }
+
+    public static void aliensHitWalls(List<Brick> walls, List<Alien> aliensList, Pane board){
+        Brick db = null;
+        for(Alien a : aliensList){
+            for(Brick b : walls){
+                if(a.getBoundsInParent().intersects(b.getBoundsInParent())){
+                    db = b;
+                }
+            }
+            walls.remove(db);
+            board.getChildren().remove(db);
+        }
+
     }
 }
