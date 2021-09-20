@@ -302,7 +302,7 @@ public class Controller implements Constant, ConstImages, ConstSounds {
                         }
                     };
                     t.start();
-                } else if (saucer.getX() <= -50) {
+                } else if (saucer.getX() >= -50) {
                     AnimationTimer t = new AnimationTimer() {
                         @Override
                         public void handle(long now) {

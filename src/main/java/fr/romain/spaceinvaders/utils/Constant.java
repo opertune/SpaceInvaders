@@ -53,7 +53,7 @@ public interface Constant {
     int SAUCER_WIDTH = 40;
     int SAUCER_HEIGHT = 25;
     int SAUCER_DELTAX = 5;
-    int SAUCER_DELAY = 10000;
+    int SAUCER_DELAY = 5000;
 
 }
 
