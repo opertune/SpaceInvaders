@@ -9,6 +9,7 @@ import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -18,6 +19,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.List;
 import java.util.Timer;
@@ -39,7 +41,10 @@ public class Controller implements Constant, ConstImages, ConstSounds {
     private AnimationTimer moveSaucer;
 
     @FXML
-    private Rectangle saucerLifeRec;
+    private Pane saucerLifeBar;
+
+    @FXML
+    private ImageView saucer100Points;
 
     @FXML
     private ImageView explod;
@@ -69,6 +74,7 @@ public class Controller implements Constant, ConstImages, ConstSounds {
             Initialisation.initAliensShot(alienShot, board);
             timer.start();
             moveSaucer();
+            saucerLifeBar.setStyle("-fx-background-color: #00FA13");
             initStartButton = true;
         }
     }
@@ -76,8 +82,8 @@ public class Controller implements Constant, ConstImages, ConstSounds {
     private void initGame() {
         ship = new Ship(X_POS_INIT_SHIP, Y_POS_INIT_SHIP, SHIP_WIDTH, SHIP_HEIGHT, SHIP);
         saucer = new Ship(X_POS_INIT_SAUCER, Y_POS_INIT_SAUCER, SAUCER_WIDTH, SAUCER_HEIGHT, SAUCER);
-        saucerLifeRec.setX(-50);
-        saucerLifeRec.setY(saucer.getY() - SAUCER_HEIGHT + 10);
+        saucerLifeBar.setLayoutX(-50);
+        saucerLifeBar.setLayoutY(saucer.getY() - SAUCER_HEIGHT + 10);
         saucerLife = 100;
         shipshot = new ShipShot(-10, -10, SHIPSHOT_WIDTH, SHIPSHOT_HEIGHT, SHIP_SHOT);
         walls = new LinkedList<>();
@@ -86,6 +92,8 @@ public class Controller implements Constant, ConstImages, ConstSounds {
         for (int i = 0; i < NB_SHOT; i++) {
             alienShot.add(new ShipShot(-10, -10, ALIEN_SHOT_WIDTH, ALIEN_SHOT_HEIGHT, ALIEN_SHOT));
         }
+        saucer100Points.setImage(SAUCER100POINTS);
+        saucer100Points.setX(-50);
     }
 
     @FXML
@@ -99,6 +107,7 @@ public class Controller implements Constant, ConstImages, ConstSounds {
                 moveSaucer.stop();
             }
             initStartButton = false;
+            saucerLifeBar.setLayoutX(saucer.getX());
         }
     }
 
@@ -162,6 +171,10 @@ public class Controller implements Constant, ConstImages, ConstSounds {
                 } catch (Exception e) {
 
                 }
+                if(saucerLife == 0){
+                    saucerLife = 100;
+                    moveSaucer();
+                }
             }
         };
     }
@@ -216,6 +229,9 @@ public class Controller implements Constant, ConstImages, ConstSounds {
             Initialisation.initSound(brickDestructionSound, sldVolume);
             walls.remove(brick);
             board.getChildren().remove(brick);
+            explod.setX(brick.getX());
+            explod.setY(brick.getY());
+            explod.setImage(new Image("File:./src/main/resources/fr/romain/spaceinvaders/images/explod.gif"));
         }
 
         // Collision avec un alien
@@ -231,9 +247,10 @@ public class Controller implements Constant, ConstImages, ConstSounds {
                 ship.set_shipIsShooting(false);
 
                 // Déplace l'imageview qui contient le gif de l'explosion à l'emplacement de l'alien mort
-                explod.setLayoutX(alien.getX());
-                explod.setLayoutY(alien.getY());
+                explod.setX(alien.getX());
+                explod.setY(alien.getY());
                 explod.setImage(new Image("File:./src/main/resources/fr/romain/spaceinvaders/images/explod.gif"));
+
                 deletedAlien = alien;
 
                 // Augmente et affiche le score
@@ -259,9 +276,42 @@ public class Controller implements Constant, ConstImages, ConstSounds {
             }
         }
 
-        // TODO HIT SAUCER
-        String cssSaucerLifer = 
-        saucerLifeRec.setStyle(css string);
+        // Collision avec le saucer
+        if (shipshot.getBoundsInParent().intersects(saucer.getBoundsInParent())) {
+            shipshot.setX(-10);
+            shipshot.setY(-10);
+            ship.set_shipIsShooting(false);
+
+            explod.setX(saucer.getX());
+            explod.setY(saucer.getY());
+            explod.setImage(new Image("File:./src/main/resources/fr/romain/spaceinvaders/images/explod.gif"));
+
+            saucerLife -= 50;
+            String saucerLifeRctCss = "";
+            if (saucerLife == 50) {
+                saucerLifeRctCss = "-fx-background-color: linear-gradient(to right,  #00FA13 0%,  #00FA13 50%, red 50%, red 100%)";
+            } else if (saucerLife == 0) {
+                saucerLifeRctCss = "-fx-background-color: #00FA13";
+                Initialisation.initSound(saucerDestructionSound, sldVolume);
+                saucerTimer.purge();
+                saucerTimer.cancel();
+                moveSaucer.stop();
+                saucer100Points.setX(saucer.getX());
+                saucer100Points.setY(saucer.getY());
+                saucer.setX(-50);
+                saucerLifeBar.setLayoutX(-50);
+                Timer task = new Timer();
+                task.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        saucer100Points.setX(-50);
+                    }
+                }, 500);
+                score += 100;
+                lblScore.setText(String.valueOf(score));
+            }
+            saucerLifeBar.setStyle(saucerLifeRctCss);
+        }
     }
 
     private void aliensHandleShot() {
@@ -279,25 +329,25 @@ public class Controller implements Constant, ConstImages, ConstSounds {
 
     private void alienShotCollisions(ShipShot s) {
         // Collision avec une brique
-//        Brick brick = null;
-//        for (Brick b : walls) {
-//            if (b.getBoundsInParent().intersects(s.getBoundsInParent())) {
-//                s.setX(-10);
-//                s.setY(-10);
-//                s.setShooting(false);
-//                brick = b;
-//            }
-//        }
-//        if (brick != null) {
-//            Initialisation.initSound(brickDestructionSound, sldVolume);
-//            walls.remove(brick);
-//            board.getChildren().remove(brick);
-//        }
+        Brick brick = null;
+        for (Brick b : walls) {
+            if (b.getBoundsInParent().intersects(s.getBoundsInParent())) {
+                s.setX(-10);
+                s.setY(-10);
+                s.setShooting(false);
+                brick = b;
+            }
+        }
+        if (brick != null) {
+            Initialisation.initSound(brickDestructionSound, sldVolume);
+            walls.remove(brick);
+            board.getChildren().remove(brick);
+        }
 
         // Collision avec le joueur
-//        if (s.getBoundsInParent().intersects(ship.getBoundsInParent())) {
-//            lose();
-//        }
+        if (s.getBoundsInParent().intersects(ship.getBoundsInParent())) {
+            lose();
+        }
     }
 
     // Move saucer
@@ -314,7 +364,7 @@ public class Controller implements Constant, ConstImages, ConstSounds {
                                 this.stop();
                             }
                             saucer.setX(saucer.getX() + SAUCER_DELTAX);
-                            saucerLifeRec.setX(saucer.getX());
+                            saucerLifeBar.setLayoutX(saucer.getX() + 5);
                         }
                     };
                     moveSaucer.start();
@@ -326,7 +376,7 @@ public class Controller implements Constant, ConstImages, ConstSounds {
                                 this.stop();
                             }
                             saucer.setX(saucer.getX() - SAUCER_DELTAX);
-                            saucerLifeRec.setX(saucer.getX());
+                            saucerLifeBar.setLayoutX(saucer.getX() + 5);
                         }
                     };
                     moveSaucer.start();
@@ -336,16 +386,20 @@ public class Controller implements Constant, ConstImages, ConstSounds {
     }
 
     private void lose() {
+        timer.stop();
         shipExplod.setX(ship.getX());
         shipExplod.setY(ship.getY());
         shipExplod.setImage(SHIP_EXPLOD);
+
         board.getChildren().remove(ship);
+
         lblResult.setTextFill(Color.RED);
         lblResult.setText("LOSE !");
+
         ship.set_shipIsShooting(true);
+
         saucerTimer.purge();
         saucerTimer.cancel();
         moveSaucer.stop();
-        timer.stop();
     }
 }

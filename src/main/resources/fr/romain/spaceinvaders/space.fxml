@@ -61,7 +61,8 @@
                   <Font name="Arial Bold" size="85.0" />
                </font>
             </Label>
-            <Rectangle fx:id="saucerLifeRec" arcHeight="5.0" arcWidth="5.0" fill="#1fff2a" height="5.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
+            <Pane fx:id="saucerLifeBar" prefHeight="3.0" prefWidth="30.0" style="-fx-background-color: #00FA13;" />
+            <ImageView fx:id="saucer100Points" fitHeight="22.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </Pane>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#009402" height="5.0" stroke="BLACK" strokeType="INSIDE" width="540.0" x="30.0" y="530.0" />

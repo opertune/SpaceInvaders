@@ -49,11 +49,10 @@ public interface Constant {
 
     // Saucer
     int X_POS_INIT_SAUCER = -50;
-    int Y_POS_INIT_SAUCER = 30;
+    int Y_POS_INIT_SAUCER = 350;
     int SAUCER_WIDTH = 40;
     int SAUCER_HEIGHT = 25;
-    int SAUCER_DELTAX = 3;
-    int SAUCER_DELAY = 5000;
-
+    int SAUCER_DELTAX = 2;
+    int SAUCER_DELAY = 10000;
 }
 

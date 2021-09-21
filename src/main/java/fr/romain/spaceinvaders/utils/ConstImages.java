@@ -31,4 +31,5 @@ public interface ConstImages {
     Image SHIP_EXPLOD = new Image(PATH + "explodShip.gif");
 
     Image SAUCER = new Image(PATH + "saucer.png");
+    Image SAUCER100POINTS = new Image(PATH + "saucer100.png");
 }
