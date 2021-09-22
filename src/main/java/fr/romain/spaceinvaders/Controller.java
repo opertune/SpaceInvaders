@@ -71,7 +71,7 @@ public class Controller implements Constant, ConstImages, ConstSounds {
     @FXML
     void onStartAction() {
         if (!initStartButton) {
-            Initialisation.animateImg(imgvLogo, 0, -500);
+            Initialisation.animateImg(imgvLogo, 0, -500, true);
             board.requestFocus();
             initGame();
             Initialisation.initShip(ship, board);
@@ -116,7 +116,7 @@ public class Controller implements Constant, ConstImages, ConstSounds {
             }
             initStartButton = false;
             saucerLifeBar.setLayoutX(saucer.getX());
-            Initialisation.animateImg(imgvLogo, -500, 0);
+            Initialisation.animateImg(imgvLogo, -500, 0, false);
         }
     }
 
@@ -353,9 +353,9 @@ public class Controller implements Constant, ConstImages, ConstSounds {
         }
 
         // Collision avec le joueur
-//        if (s.getBoundsInParent().intersects(ship.getBoundsInParent())) {
-//            lose();
-//        }
+        if (s.getBoundsInParent().intersects(ship.getBoundsInParent())) {
+            lose();
+        }
     }
 
     // Move saucer

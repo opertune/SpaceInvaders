@@ -1,6 +1,7 @@
 package fr.romain.spaceinvaders.utils;
 
 import fr.romain.spaceinvaders.entities.*;
+import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
 import javafx.animation.TranslateTransition;
 import javafx.scene.Group;
@@ -93,11 +94,19 @@ public class Initialisation implements ConstImages, Constant{
         }
     }
 
-    public static void animateImg(ImageView imgvLogo, int fromY, int toY){
+    public static void animateImg(ImageView imgvLogo, int fromY, int toY, boolean disableFade){
         TranslateTransition animationImage = new TranslateTransition(Duration.millis(800), imgvLogo);
         animationImage.setFromY(fromY);
         animationImage.setToY(toY);
         animationImage.setInterpolator(Interpolator.EASE_OUT);
         animationImage.play();
+        FadeTransition fade = new FadeTransition(Duration.millis(800), imgvLogo);
+        fade.setNode(imgvLogo);
+        if (disableFade){
+            fade.setToValue(0);
+        }else {
+            fade.setToValue(1);
+        }
+        fade.play();
     }
 }
