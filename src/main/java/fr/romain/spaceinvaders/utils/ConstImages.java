@@ -32,4 +32,6 @@ public interface ConstImages {
 
     Image SAUCER = new Image(PATH + "saucer.png");
     Image SAUCER100POINTS = new Image(PATH + "saucer100.png");
+
+    Image LOGO = new Image(PATH + "logoSpaceInvaders.png");
 }

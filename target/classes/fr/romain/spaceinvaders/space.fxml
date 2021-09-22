@@ -62,9 +62,14 @@
                </font>
             </Label>
             <Pane fx:id="saucerLifeBar" prefHeight="3.0" prefWidth="30.0" style="-fx-background-color: #00FA13;" />
-            <ImageView fx:id="saucer100Points" fitHeight="22.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="imgvLogo" fitHeight="472.0" fitWidth="472.0" pickOnBounds="true" preserveRatio="true" x="64.0" y="95.0">
+               <image>
+                  <Image url="@images/logoSpaceInvaders.png" />
+               </image>
+            </ImageView>
          </children>
       </Pane>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#009402" height="5.0" stroke="BLACK" strokeType="INSIDE" width="540.0" x="30.0" y="530.0" />
+      <ImageView fx:id="saucer100Points" fitHeight="22.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
    </children>
 </Pane>

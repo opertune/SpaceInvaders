@@ -6,6 +6,8 @@ import fr.romain.spaceinvaders.utils.ConstSounds;
 import fr.romain.spaceinvaders.utils.Constant;
 import fr.romain.spaceinvaders.utils.Initialisation;
 import javafx.animation.AnimationTimer;
+import javafx.animation.Interpolator;
+import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -17,6 +19,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -39,9 +42,13 @@ public class Controller implements Constant, ConstImages, ConstSounds {
     private Timer saucerTimer;
     private int saucerLife = 100;
     private AnimationTimer moveSaucer;
+    private TranslateTransition animationImage;
 
     @FXML
     private Pane saucerLifeBar;
+
+    @FXML
+    private ImageView imgvLogo;
 
     @FXML
     private ImageView saucer100Points;
@@ -64,6 +71,7 @@ public class Controller implements Constant, ConstImages, ConstSounds {
     @FXML
     void onStartAction() {
         if (!initStartButton) {
+            Initialisation.animateImg(imgvLogo, 0, -500);
             board.requestFocus();
             initGame();
             Initialisation.initShip(ship, board);
@@ -108,6 +116,7 @@ public class Controller implements Constant, ConstImages, ConstSounds {
             }
             initStartButton = false;
             saucerLifeBar.setLayoutX(saucer.getX());
+            Initialisation.animateImg(imgvLogo, -500, 0);
         }
     }
 
@@ -174,6 +183,13 @@ public class Controller implements Constant, ConstImages, ConstSounds {
                 if(saucerLife == 0){
                     saucerLife = 100;
                     moveSaucer();
+                }
+                // Si tout les aliens sont mort -> Fin du jeu
+                if (aliensList.isEmpty()) {
+                    timer.stop();
+                    lblResult.setTextFill(Color.web("#009402"));
+                    lblResult.setText("WIN !");
+                    ship.set_shipIsShooting(true);
                 }
             }
         };
@@ -256,14 +272,6 @@ public class Controller implements Constant, ConstImages, ConstSounds {
                 // Augmente et affiche le score
                 score++;
                 lblScore.setText(String.valueOf(score));
-
-                // Si tout les aliens sont mort -> Fin du jeu
-                if (score == 50) {
-                    timer.stop();
-                    lblResult.setTextFill(Color.web("#009402"));
-                    lblResult.setText("WIN !");
-                    ship.set_shipIsShooting(true);
-                }
             }
         }
         // Supprime l'alien touché
@@ -345,9 +353,9 @@ public class Controller implements Constant, ConstImages, ConstSounds {
         }
 
         // Collision avec le joueur
-        if (s.getBoundsInParent().intersects(ship.getBoundsInParent())) {
-            lose();
-        }
+//        if (s.getBoundsInParent().intersects(ship.getBoundsInParent())) {
+//            lose();
+//        }
     }
 
     // Move saucer

@@ -1,10 +1,14 @@
 package fr.romain.spaceinvaders.utils;
 
 import fr.romain.spaceinvaders.entities.*;
+import javafx.animation.Interpolator;
+import javafx.animation.TranslateTransition;
 import javafx.scene.Group;
 import javafx.scene.control.Slider;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 import javax.sound.sampled.*;
 import java.io.File;
@@ -87,6 +91,13 @@ public class Initialisation implements ConstImages, Constant{
         } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
             e.printStackTrace();
         }
+    }
 
+    public static void animateImg(ImageView imgvLogo, int fromY, int toY){
+        TranslateTransition animationImage = new TranslateTransition(Duration.millis(800), imgvLogo);
+        animationImage.setFromY(fromY);
+        animationImage.setToY(toY);
+        animationImage.setInterpolator(Interpolator.EASE_OUT);
+        animationImage.play();
     }
 }
